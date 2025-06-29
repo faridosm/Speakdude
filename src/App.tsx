@@ -97,8 +97,8 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      {/* Fixed Bolt.new Badge - Bottom Right */}
-      <div className="fixed bottom-4 right-4 z-50">
+      {/* Fixed Bolt.new Badge - Bottom Right - Increased Size */}
+      <div className="fixed bottom-6 right-6 z-50">
         <a 
           href="https://bolt.new/" 
           target="_blank" 
@@ -108,7 +108,7 @@ function App() {
           <img 
             src="/black_circle_360x360.png" 
             alt="Built with Bolt.new" 
-            className="w-12 h-12 md:w-14 md:h-14 drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
+            className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
           />
         </a>
       </div>
