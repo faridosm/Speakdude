@@ -1,205 +1,241 @@
 # SpeakDude - AI-Powered Language Learning Platform
 
-SpeakDude is a modern language learning platform that focuses on conversational practice through AI-powered avatars. Built with React, TypeScript, Supabase, and integrated with Tavus + LiveKit for real-time AI conversations.
+SpeakDude is a modern language learning platform that focuses on conversational practice through AI-powered avatars and interactive games. Practice speaking naturally with realistic AI tutors and improve your translation skills through gamified challenges.
 
-## Features
+## 🚀 Features
 
-### 🤖 Practice with AI
-- **Realistic AI Avatars**: Practice conversations with lifelike AI avatars powered by Tavus
-- **Multiple Scenarios**: Choose from various conversation scenarios (casual, business, travel)
-- **Real-time Interaction**: Live video/audio conversations using LiveKit
-- **Natural Conversations**: AI avatars can see, hear, and respond naturally
+### 🤖 Practice with LUNA AI Avatar
+- **Realistic AI Conversations**: Practice with Luna, a lifelike AI language tutor powered by Tavus
+- **12+ Languages Supported**: English, Spanish, French, German, Italian, Portuguese, Japanese, Korean, Chinese, Arabic, Hindi, and more
+- **Multilingual Mode**: Switch languages on the spot for ultimate flexibility
+- **Real-time Video Chat**: High-quality video conversations using Tavus + Daily.co integration
+- **Natural Interactions**: AI avatar can see, hear, and respond naturally in real-time
+- **Adaptive Teaching**: AI adjusts conversation complexity based on your proficiency level
+- **Immediate Session Tracking**: Every conversation is automatically recorded for progress tracking
 
-### 📊 Progress Tracking
-- **Learning Analytics**: Track words learned, speaking time, and streak days
-- **Session History**: View detailed history of all practice sessions
-- **Achievement System**: Unlock achievements as you progress
+### ⚡ Rapid Translation Game
+- **Quick Translation Challenges**: AI speaks sentences in your native language, you translate to your target language
+- **Multiple Difficulty Levels**: Beginner, Intermediate, and Advanced challenges
+- **Time-Based Gameplay**: Configurable time limits (10-40 seconds per question)
+- **Real-time Scoring**: Instant AI evaluation and feedback using ChatGPT
+- **Speech Recognition**: Uses OpenAI Whisper for accurate speech-to-text transcription
+- **Text-to-Speech**: ElevenLabs provides natural audio pronunciation
+- **Varied Content**: AI generates diverse topics to prevent repetition
+- **Session Recording**: Automatic progress tracking with scores and duration
 
-### 🎯 Personalized Learning
-- **Multiple Languages**: Support for English, Spanish, Italian, Japanese, Korean, and more
-- **Difficulty Levels**: Beginner to advanced conversation scenarios
-- **Adaptive Learning**: AI adjusts to your skill level
+### 📊 Comprehensive Progress Tracking
+- **Activity Calendar**: Visual monthly calendar showing daily learning activity
+- **Session History**: Complete history of all AI conversations and translation games
+- **Performance Analytics**: 
+  - Total sessions completed
+  - Average scores across different activities
+  - Time spent learning
+  - Current learning streak
+- **Achievement System**: Track milestones and celebrate learning progress
+- **Session Type Breakdown**: Analyze your preferred learning methods
 
-## Technology Stack
 
-- **Frontend**: React 18, TypeScript, Tailwind CSS
-- **Backend**: Supabase (PostgreSQL, Auth, Real-time)
-- **AI Integration**: Tavus (AI Avatars) + LiveKit (Real-time Communication)
-- **UI Components**: Lucide React icons, Framer Motion animations
-- **Build Tool**: Vite
 
-## Getting Started
+## 🛠️ Technology Stack
+
+- **Frontend**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS with custom gradients and animations
+- **Backend**: Supabase (PostgreSQL + Auth + Edge Functions)
+- **AI Services**: 
+  - **Tavus**: AI avatar generation and management
+  - **Daily.co**: Real-time video/audio communication
+  - **OpenAI**: ChatGPT for conversations & Whisper for speech recognition
+  - **ElevenLabs**: Text-to-speech for natural audio
+- **State Management**: React hooks with custom data management
+- **UI Components**: Lucide React icons, custom components
+
+## ⚙️ Installation & Setup
 
 ### Prerequisites
-- Node.js 18+ 
+- Node.js 18 or higher
 - Supabase account
 - Tavus account (for AI avatars)
-- LiveKit account (for real-time communication)
+- OpenAI account (for ChatGPT & Whisper)
+- ElevenLabs account (for text-to-speech)
 
-### Installation
-
-1. Clone the repository:
+### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd speakdude
+git clone <your-repository-url>
+cd speakflow
 ```
 
-2. Install dependencies:
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-3. Set up environment variables:
-```bash
-cp .env.example .env
-```
+### 3. Environment Variables Setup
 
-Fill in your configuration:
+Create a `.env` file in the root directory:
 ```env
-# Supabase
-VITE_SUPABASE_URL=your_supabase_url
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_project_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
-# LiveKit (set these in Supabase Edge Function environment)
-LIVEKIT_API_KEY=your_livekit_api_key
-LIVEKIT_API_SECRET=your_livekit_api_secret
-LIVEKIT_WS_URL=wss://your-livekit-server.livekit.cloud
+### 4. Supabase Edge Functions Environment Variables
 
-# Tavus (set these in Supabase Edge Function environment)
+In your Supabase Dashboard, go to **Edge Functions** and set these environment variables:
+
+```env
+# Tavus Configuration (for AI Avatars)
 TAVUS_API_KEY=your_tavus_api_key
+TAVUS_REPLICA=your_tavus_replica_id
+TAVUS_PERSONA=your_tavus_persona_id
+
+# OpenAI Configuration (for ChatGPT & Whisper)
+OPENAI_API_KEY=your_openai_api_key
+
+# ElevenLabs Configuration (for Text-to-Speech)
+ELEVENLABS_API_KEY=your_elevenlabs_api_key
 ```
 
-4. Set up the database:
+### 5. Database Setup
+
+The database schema is automatically created through Supabase migrations. The main tables include:
+- `profiles` - User profile information
+- `user_progress` - Learning progress and streaks
+- `learning_sessions` - Individual session records
+
+### 6. Deploy Edge Functions
+
 ```bash
-# The migrations will be automatically applied when you connect to Supabase
+# Install Supabase CLI
+npm install -g supabase
+
+# Login to Supabase
+supabase login
+
+# Deploy edge functions
+supabase functions deploy livekit-token
+supabase functions deploy translation-game
+supabase functions deploy whisper-transcribe
 ```
 
-5. Start the development server:
+### 7. Start Development Server
 ```bash
 npm run dev
 ```
 
-## AI Integration Setup
+## 🔧 Service Configuration
 
-### Tavus + LiveKit Integration
-
-The Practice with AI feature uses Tavus for AI avatars and LiveKit for real-time communication. Here's how it works:
-
-#### Integration Flow:
-
-1. **Scenario Selection**: User chooses a conversation scenario (casual, business, travel)
-2. **Token Generation**: Backend creates LiveKit access token with room permissions
-3. **Avatar Session**: Tavus avatar is configured with specific persona and joins LiveKit room
-4. **Real-time Connection**: User connects to LiveKit room for video/audio communication
-5. **AI Conversation**: Natural conversation begins between user and AI avatar
-
-#### Key Components:
-
-- **PracticeWithAI.tsx**: Main practice interface with scenario selection and video chat
-- **livekit-token Edge Function**: Backend token generation and Tavus integration
-- **LiveKit Room**: Real-time video/audio communication infrastructure
-- **Tavus Avatars**: AI-powered realistic human avatars with custom personas
-
-### Setting up Tavus + LiveKit
-
-#### 1. LiveKit Setup
-1. Sign up at [LiveKit Cloud](https://cloud.livekit.io) or set up self-hosted server
-2. Create a new project and get your API credentials
-3. Note your WebSocket URL (e.g., `wss://your-project.livekit.cloud`)
-
-#### 2. Tavus Setup
+### Tavus Setup (AI Avatars)
 1. Sign up at [Tavus.io](https://tavus.io)
-2. Create AI avatar replicas for different scenarios
-3. Set up personas with conversation prompts
-4. Get your API key and replica/persona IDs
+2. Create an AI avatar replica
+3. Set up a persona with language teaching prompts
+4. Get your API key, replica ID, and persona ID
 
-#### 3. Configuration
-Update the avatar configurations in `src/components/PracticeWithAI.tsx`:
+### OpenAI Setup (AI Intelligence)
+1. Get API key from [OpenAI Platform](https://platform.openai.com)
+2. Ensure access to:
+   - GPT-4 (for conversations and evaluations)
+   - Whisper (for speech transcription)
 
-```typescript
-const AI_SCENARIOS = [
-  {
-    id: 'casual-conversation',
-    replica_id: 'your_actual_replica_id', // Replace with real Tavus replica ID
-    persona_id: 'your_actual_persona_id', // Replace with real Tavus persona ID
-    // ... other config
-  },
-  // ... more scenarios
-];
+### ElevenLabs Setup (Voice Synthesis)
+1. Sign up at [ElevenLabs.io](https://elevenlabs.io)
+2. Get your API key
+3. The app uses pre-configured multilingual voices
+
+## 🏗️ Architecture Overview
+
+### AI Avatar Conversations Flow
+1. User selects a language and scenario
+2. Frontend calls `livekit-token` edge function
+3. Tavus creates a conversation with Daily.co room
+4. User joins Daily.co room for real-time video chat
+5. AI avatar joins automatically and starts conversation
+6. Session data is recorded in real-time to database
+
+### Translation Game Flow
+1. User configures language pair and difficulty
+2. `translation-game` edge function generates sentence using ChatGPT
+3. ElevenLabs converts text to speech for audio playback
+4. User speaks translation, captured by browser microphone
+5. `whisper-transcribe` edge function processes speech to text
+6. ChatGPT evaluates translation accuracy and provides feedback
+7. Results are scored and saved to user progress
+
+## 📁 Project Structure
+
+```
+project/
+├── src/
+│   ├── components/
+│   │   ├── PracticeWithAI.tsx       # AI avatar conversation interface
+│   │   ├── TranslationGame.tsx      # Rapid translation game
+│   │   ├── ProgressSection.tsx      # Progress tracking dashboard
+│   │   └── ProtectedRoute.tsx       # Authentication wrapper
+│   ├── hooks/
+│   │   ├── useAuth.ts               # Authentication logic
+│   │   └── useUserData.ts           # User data management
+│   ├── lib/
+│   │   ├── supabase.ts              # Supabase client & types
+│   │   └── translationGameAPI.ts    # Translation game utilities
+│   ├── App.tsx                      # Main application component
+│   ├── Dashboard.tsx                # User dashboard
+│   └── LoginPage.tsx                # Authentication page
+├── supabase/
+│   ├── functions/
+│   │   ├── livekit-token/           # Tavus + Daily.co integration
+│   │   ├── translation-game/        # Game logic & AI evaluation
+│   │   └── whisper-transcribe/      # Speech recognition
+│   └── migrations/                  # Database schema
+└── public/                          # Static assets including Luna avatar image
 ```
 
-#### 4. Environment Variables
-Set these in your Supabase project's Edge Function environment:
+## 🎮 How to Use
 
-```bash
-# In Supabase Dashboard > Edge Functions > Environment Variables
-LIVEKIT_API_KEY=your_livekit_api_key
-LIVEKIT_API_SECRET=your_livekit_api_secret
-LIVEKIT_WS_URL=wss://your-livekit-server.livekit.cloud
-TAVUS_API_KEY=your_tavus_api_key
-```
+### AI Conversation Practice
+1. Click "Practice with AI" from the dashboard
+2. Choose your target language or select "Multilingual Practice"
+3. Wait for Luna (AI avatar) to connect via video
+4. Start speaking naturally - Luna will respond and help you learn
+5. Use voice controls to mute/unmute, adjust video quality
+6. Sessions are automatically tracked for progress analysis
 
-#### 5. Backend Implementation
-The current implementation in `supabase/functions/livekit-token/index.ts` is a mock. For production:
+### Rapid Translation Game
+1. Click "Translation Game" from the dashboard
+2. Select your native language and target practice language
+3. Choose difficulty level (Beginner/Intermediate/Advanced)
+4. Set time limit per question (10-40 seconds)
+5. Listen to AI-generated sentences and translate them
+6. Speak your translation within the time limit
+7. Get instant AI feedback and scoring
+8. Complete multiple rounds to improve your skills
 
-1. Install LiveKit Server SDK in your edge function
-2. Create proper access tokens with room permissions
-3. Make API calls to Tavus to start avatar sessions
-4. Configure avatars to join LiveKit rooms automatically
+### Progress Tracking
+1. Click "Progress" to view your learning analytics
+2. See activity calendar with daily practice history
+3. Review session history with detailed breakdowns
+4. Track achievements and learning streaks
+5. Analyze performance across different activity types
 
-### Example Real Implementation
+## 🔒 Security & Privacy
 
-```typescript
-// In your edge function
-import { AccessToken, VideoGrant } from 'livekit-server-sdk';
+- All API keys are securely stored in Supabase environment variables
+- Frontend never handles sensitive credentials directly
+- User authentication managed by Supabase Auth
+- Session data is associated with authenticated users only
+- AI conversations are not stored permanently for privacy
 
-// Create LiveKit token
-const at = new AccessToken(LIVEKIT_API_KEY, LIVEKIT_API_SECRET, {
-  identity: participantName,
-});
+## 🚀 Deployment
 
-at.addGrant({
-  room: roomName,
-  roomJoin: true,
-  canPublish: true,
-  canSubscribe: true,
-});
+### Frontend Deployment
+The React app can be deployed to any static hosting service:
+- Netlify(recommended)
 
-const token = at.toJwt();
 
-// Start Tavus avatar session
-const tavusResponse = await fetch('https://tavusapi.com/v2/conversations', {
-  method: 'POST',
-  headers: {
-    'x-api-key': TAVUS_API_KEY,
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    replica_id: tavusConfig.replica_id,
-    persona_id: tavusConfig.persona_id,
-    livekit_url: LIVEKIT_WS_URL,
-    livekit_token: token,
-    room_name: roomName,
-  }),
-});
-```
+### Backend Services
+- Supabase handles all backend infrastructure
+- Edge Functions are deployed through Supabase CLI
+- Database and auth are managed by Supabase
 
-## Database Schema
-
-The application uses the following main tables:
-
-- **profiles**: User profile information
-- **user_progress**: Learning progress tracking
-- **learning_sessions**: Individual practice session records
-
-## Features in Development
-
-- **Translation Game**: Interactive translation challenges
-- **Social Practice**: Practice with other users
-- **Advanced Analytics**: Detailed learning insights
-- **Mobile App**: React Native mobile application
-
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -207,25 +243,15 @@ The application uses the following main tables:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📝 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
+## 🆘 Support
 
-For support, email support@speakdude.com or join our Discord community.
+For support and questions:
+1. Check the documentation above
+2. Review the code comments for implementation details
+3. Ensure all environment variables are correctly configured
+4. Verify that all external services (Tavus, OpenAI, ElevenLabs) are properly set up
 
----
-
-## Tavus + LiveKit Integration Notes
-
-This implementation provides a complete foundation for real-time AI avatar conversations. The key is that Tavus avatars automatically join LiveKit rooms and engage in natural conversations based on their configured personas.
-
-**Next Steps:**
-1. Set up actual Tavus and LiveKit accounts
-2. Replace mock IDs with real avatar/persona IDs
-3. Implement proper backend token generation
-4. Test with real AI avatars
-5. Fine-tune personas for optimal learning experiences
-
-The system is designed to be production-ready once the external services are properly configured.
