@@ -729,7 +729,7 @@ export function PracticeWithAI({ onBack }: PracticeWithAIProps) {
             console.log('✅ Basic video quality settings applied successfully');
           } catch (fallbackError) {
             console.warn('⚠️ All quality optimizations failed:', fallbackError);
-            // Continue even if quality settings fail - basic video will still work
+          // Continue even if quality settings fail - basic video will still work
           }
         }
         setConnectionData({
@@ -876,10 +876,10 @@ export function PracticeWithAI({ onBack }: PracticeWithAIProps) {
           // Don't throw - session was already recorded at start
         }
       }
-
+      
       // 🔧 STATE CLEANUP: Reset all component state
       setConnectionData(null);
-      setSelectedScenario(null);
+    setSelectedScenario(null);
       setConnectionStatus('disconnected');
       setParticipants([]);
       setErrorMessage(null);
@@ -1485,7 +1485,11 @@ export function PracticeWithAI({ onBack }: PracticeWithAIProps) {
             />
           ) : (
         <div className="text-center text-white">
-              <Bot className="w-24 h-24 mx-auto mb-4 text-gray-400" />
+              <img 
+                src="/luna.png" 
+                alt="Luna AI Avatar"
+                className="w-24 h-24 mx-auto mb-4 rounded-full object-cover shadow-lg"
+              />
               <p className="text-xl mb-2">Waiting for AI Avatar...</p>
               <p className="text-gray-400">The avatar will appear shortly</p>
               {connectionStatus === 'connecting' && (
