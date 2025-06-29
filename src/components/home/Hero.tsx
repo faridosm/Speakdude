@@ -212,10 +212,10 @@ export function Hero({ user, onNavigate }: HeroProps) {
         {/* Get Started Button - Now below the image with increased width */}
         <div className="text-center">
           <button 
-            onClick={() => user ? onNavigate('dashboard') : handleSignUpClick}
+            onClick={handleSignUpClick}
             className="bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-12 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl min-w-[280px]"
           >
-            {user ? 'Go to Dashboard' : 'Get Started'}
+            Get Started
           </button>
         </div>
       </div>
