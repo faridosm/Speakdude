@@ -97,6 +97,22 @@ function App() {
 
   return (
     <div className="min-h-screen">
+      {/* Fixed Bolt.new Badge - Bottom Right */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <a 
+          href="https://bolt.new/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block hover:scale-110 transition-transform duration-300"
+        >
+          <img 
+            src="/black_circle_360x360.png" 
+            alt="Built with Bolt.new" 
+            className="w-12 h-12 md:w-14 md:h-14 drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
+          />
+        </a>
+      </div>
+
       {/* Hero Section with Grid Lines */}
       <Hero user={user} onNavigate={setCurrentPage} />
 
@@ -369,24 +385,9 @@ function App() {
           
           {/* Bottom Bar */}
           <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-4 mb-4 md:mb-0">
-              <p className="text-gray-400 text-sm">
-                © 2024 SpeakFlow. All rights reserved.
-              </p>
-              {/* Bolt.new Badge - Footer */}
-              <a 
-                href="https://bolt.new/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="block hover:scale-110 transition-transform duration-300"
-              >
-                <img 
-                  src="/white_circle_360x360.png" 
-                  alt="Built with Bolt.new" 
-                  className="w-8 h-8 opacity-80 hover:opacity-100 transition-opacity duration-300"
-                />
-              </a>
-            </div>
+            <p className="text-gray-400 text-sm mb-4 md:mb-0">
+              © 2024 SpeakFlow. All rights reserved.
+            </p>
             <div className="flex space-x-6">
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Privacy Policy</a>
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">Terms of Use</a>
