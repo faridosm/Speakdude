@@ -143,7 +143,7 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
             <div className="pt-8">
               <button 
                 onClick={handleStartSpeaking}
-                className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-6 py-3 rounded-full text-base font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-full text-base font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
               >
                 Start Speaking Today
               </button>
