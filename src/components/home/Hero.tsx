@@ -64,6 +64,22 @@ export function Hero({ user, onNavigate }: HeroProps) {
           backgroundSize: '60px 60px'
         }}
       />
+
+      {/* Bolt.new Badge - Top Right */}
+      <div className="absolute top-4 right-4 z-50">
+        <a 
+          href="https://bolt.new/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="block hover:scale-110 transition-transform duration-300"
+        >
+          <img 
+            src="/black_circle_360x360.png" 
+            alt="Built with Bolt.new" 
+            className="w-12 h-12 md:w-16 md:h-16 drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
+          />
+        </a>
+      </div>
       
       {/* Navigation */}
       <nav className="relative z-10 px-6 py-3">
