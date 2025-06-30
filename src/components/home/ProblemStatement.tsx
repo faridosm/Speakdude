@@ -7,7 +7,6 @@ import {
   Frown,
   Brain,
   MessageSquare,
-  Zap,
   Target,
   TrendingDown,
   Users,
@@ -168,15 +167,10 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
           </div>
         </div>
 
-        {/* Solution Teaser - Without Button */}
+        {/* Solution Teaser - Without The Solution Button */}
         <div className="text-center">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/30 max-w-3xl mx-auto shadow-lg">
             <div className="mb-4">
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-full px-3 py-1.5 mb-3">
-                <Zap className="w-4 h-4 text-white" />
-                <span className="text-white font-semibold text-xs">The Solution</span>
-              </div>
-              
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                 Traditional Learning Teaches{' '}
                 <span className="text-orange-500">Knowledge</span>
