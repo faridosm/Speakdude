@@ -41,7 +41,7 @@ export function Features() {
   ];
 
   return (
-    <section id="features-section" className="bg-gray-50 py-12 relative overflow-hidden">
+    <section id="features-section" style={{ backgroundColor: '#eeeeee' }} className="py-12 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
         {/* Enhanced Header */}
         <div className="space-y-6 text-center">
