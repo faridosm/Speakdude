@@ -74,7 +74,7 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
   ];
 
   return (
-    <section className="py-16" style={{
+    <section className="py-12" style={{
       background: 'linear-gradient(135deg, #f5f7a8 0%, #e8d5ff 50%, #d4a5ff 100%)'
     }}>
       {/* Grid Pattern Background - Matching Hero */}
@@ -89,16 +89,16 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
         }}
       />
       
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        {/* Hero Section with Dynamic Language */}
-        <div className="text-center mb-12">
-          <div className="mb-8">
-            <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-white/30">
-              <AlertTriangle className="w-5 h-5 text-orange-600" />
-              <span className="text-gray-800 font-semibold text-sm">The Hidden Problem</span>
+      <div className="relative z-10 max-w-6xl mx-auto px-6">
+        {/* Hero Section with Dynamic Language - Reduced sizes */}
+        <div className="text-center mb-8">
+          <div className="mb-6">
+            <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1.5 mb-4 border border-white/30">
+              <AlertTriangle className="w-4 h-4 text-orange-600" />
+              <span className="text-gray-800 font-semibold text-xs">The Hidden Problem</span>
             </div>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-6 leading-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight">
               You Learned{' '}
               <span 
                 className={`inline-block transition-all duration-300 ${
@@ -122,32 +122,32 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
               </span>
             </h2>
             
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed font-medium">
+            <p className="text-base text-gray-700 max-w-2xl mx-auto leading-relaxed font-medium">
               Millions of language learners face the same frustrating reality: they know the language in their head, 
               but can't speak it with their mouth.
             </p>
           </div>
         </div>
 
-        {/* Pain Points Section - Now in the center where stats were */}
-        <div className="mb-12">
-          <div className="text-center mb-8">
-            <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        {/* Pain Points Section - Reduced spacing and sizes */}
+        <div className="mb-8">
+          <div className="text-center mb-6">
+            <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
               Sound Familiar?
             </h3>
-            <p className="text-gray-700 text-lg max-w-2xl mx-auto font-medium">
+            <p className="text-gray-700 text-sm max-w-xl mx-auto font-medium">
               These are the most common struggles that keep language learners stuck in the "study forever, never speak" cycle.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {painPoints.map((point, index) => (
               <div 
                 key={index}
                 className="group relative"
               >
-                {/* Card */}
-                <div className={`bg-gradient-to-br ${point.bgGradient} rounded-3xl p-6 shadow-xl border border-white/30 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 relative overflow-hidden`}>
+                {/* Card - Reduced padding */}
+                <div className={`bg-gradient-to-br ${point.bgGradient} rounded-2xl p-4 shadow-lg border border-white/30 hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 relative overflow-hidden`}>
                   {/* Background pattern */}
                   <div className="absolute inset-0 opacity-5">
                     <div 
@@ -159,22 +159,22 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
                     />
                   </div>
                   
-                  {/* Content */}
+                  {/* Content - Reduced sizes */}
                   <div className="relative z-10">
-                    <div className={`w-14 h-14 ${point.iconBg} rounded-2xl flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
-                      <point.icon className="w-7 h-7 text-white" />
+                    <div className={`w-10 h-10 ${point.iconBg} rounded-xl flex items-center justify-center mb-3 shadow-md group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}>
+                      <point.icon className="w-5 h-5 text-white" />
                     </div>
                     
-                    <h4 className="text-lg font-bold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors">
+                    <h4 className="text-sm font-bold text-gray-900 mb-2 group-hover:text-gray-800 transition-colors">
                       {point.title}
                     </h4>
                     
-                    <p className="text-gray-700 leading-relaxed group-hover:text-gray-600 transition-colors text-sm">
+                    <p className="text-gray-700 leading-relaxed group-hover:text-gray-600 transition-colors text-xs">
                       {point.description}
                     </p>
                     
                     {/* Animated underline */}
-                    <div className={`w-0 h-1 bg-gradient-to-r ${point.gradient} rounded-full mt-4 group-hover:w-full transition-all duration-500`}></div>
+                    <div className={`w-0 h-0.5 bg-gradient-to-r ${point.gradient} rounded-full mt-3 group-hover:w-full transition-all duration-500`}></div>
                   </div>
                 </div>
               </div>
@@ -182,51 +182,51 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
           </div>
         </div>
 
-        {/* Solution Teaser */}
+        {/* Solution Teaser - Reduced sizes and spacing */}
         <div className="text-center">
-          <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 border border-white/30 max-w-4xl mx-auto shadow-xl">
-            <div className="mb-6">
-              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-full px-4 py-2 mb-4">
-                <Zap className="w-5 h-5 text-white" />
-                <span className="text-white font-semibold text-sm">The Solution</span>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/30 max-w-3xl mx-auto shadow-lg">
+            <div className="mb-4">
+              <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-full px-3 py-1.5 mb-3">
+                <Zap className="w-4 h-4 text-white" />
+                <span className="text-white font-semibold text-xs">The Solution</span>
               </div>
               
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                 Traditional Learning Teaches{' '}
-                <span className="text-red-500">Knowledge</span>
+                <span className="text-orange-500">Knowledge</span>
                 <br />
                 Not{' '}
-                <span className="text-green-600">Fluency</span>
+                <span className="text-orange-500">Fluency</span>
               </h3>
               
-              <p className="text-gray-700 text-lg leading-relaxed mb-6 font-medium">
-                Real speaking fluency only comes through <strong className="text-orange-600">real practice</strong> — 
+              <p className="text-gray-700 text-sm leading-relaxed mb-4 font-medium">
+                Real speaking fluency only comes through <strong className="text-orange-500">real practice</strong> — 
                 the kind where you actually open your mouth, make mistakes, and build the muscle memory 
                 that turns thinking into natural speech.
               </p>
               
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-white/30">
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30">
+                <p className="text-lg font-bold text-gray-900">
                   Your brain knows the language;
                   <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-red-500">
+                  <span className="text-orange-500">
                     now your mouth needs to learn it too.
                   </span>
                 </p>
               </div>
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button - Reduced size */}
             <button 
               onClick={handleStartSpeaking}
-              className="group relative inline-flex items-center space-x-3 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+              className="group relative inline-flex items-center space-x-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
             >
               {/* Button background animation */}
               <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
               
-              <MessageSquare className="w-6 h-6 relative z-10" />
+              <MessageSquare className="w-4 h-4 relative z-10" />
               <span className="relative z-10">Start Speaking Today</span>
-              <Target className="w-6 h-6 relative z-10 group-hover:rotate-90 transition-transform duration-300" />
+              <Target className="w-4 h-4 relative z-10 group-hover:rotate-90 transition-transform duration-300" />
             </button>
           </div>
         </div>
