@@ -101,17 +101,9 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight">
               You Learned{' '}
               <span 
-                className={`inline-block transition-all duration-300 ${
-                  isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                className={`text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600 transition-opacity duration-300 ${
+                  isVisible ? 'opacity-100' : 'opacity-0'
                 }`}
-                style={{
-                  background: 'linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3)',
-                  backgroundSize: '300% 300%',
-                  animation: 'gradientShift 3s ease infinite',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text'
-                }}
               >
                 {languages[currentLanguageIndex]}
               </span>
@@ -231,15 +223,6 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
           </div>
         </div>
       </div>
-
-      {/* CSS for gradient animation */}
-      <style jsx>{`
-        @keyframes gradientShift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-      `}</style>
     </section>
   );
 }
