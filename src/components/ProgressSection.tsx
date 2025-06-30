@@ -33,32 +33,16 @@ interface ActivityDay {
 }
 
 export function ProgressSection({ onBack }: ProgressSectionProps) {
-  const { profile, progress, recentSessions, loading } = useUserData();
+  const { profile, progress, recentSessions, allSessions, loading } = useUserData();
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [allSessions, setAllSessions] = useState<any[]>([]);
   const [activityCalendar, setActivityCalendar] = useState<ActivityDay[]>([]);
 
-  // Fetch all sessions for the user
+  // Generate activity calendar when allSessions or currentMonth changes
   useEffect(() => {
-    const fetchAllSessions = async () => {
-      try {
-        const { data } = await import('../lib/supabase').then(module => module.supabase
-          .from('learning_sessions')
-          .select('*')
-          .order('completed_at', { ascending: false })
-        );
-        
-        if (data) {
-          setAllSessions(data);
-          generateActivityCalendar(data, currentMonth);
-        }
-      } catch (error) {
-        console.error('Error fetching all sessions:', error);
-      }
-    };
-
-    fetchAllSessions();
-  }, [currentMonth]);
+    if (allSessions && allSessions.length >= 0) {
+      generateActivityCalendar(allSessions, currentMonth);
+    }
+  }, [allSessions, currentMonth]);
 
   // Generate activity calendar for the current month
   const generateActivityCalendar = (sessions: any[], month: Date) => {
@@ -160,15 +144,15 @@ export function ProgressSection({ onBack }: ProgressSectionProps) {
 
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // Calculate statistics
-  const totalSessions = allSessions.length;
+  // Calculate statistics using allSessions from useUserData
+  const totalSessions = allSessions?.length || 0;
   const averageScore = totalSessions > 0 
-    ? Math.round(allSessions.reduce((sum, s) => sum + (s.score || 0), 0) / totalSessions)
+    ? Math.round((allSessions?.reduce((sum, s) => sum + (s.score || 0), 0) || 0) / totalSessions)
     : 0;
-  const totalMinutes = allSessions.reduce((sum, s) => sum + (s.duration_minutes || 0), 0);
-  const activeDays = new Set(allSessions.map(s => 
+  const totalMinutes = allSessions?.reduce((sum, s) => sum + (s.duration_minutes || 0), 0) || 0;
+  const activeDays = allSessions ? new Set(allSessions.map(s => 
     new Date(s.completed_at).toDateString()
-  )).size;
+  )).size : 0;
 
   if (loading) {
     return (
@@ -381,7 +365,7 @@ export function ProgressSection({ onBack }: ProgressSectionProps) {
               </div>
               <div className="p-6 space-y-3">
                 {['ai_conversation', 'translation_game', 'speaking_practice'].map(type => {
-                  const count = allSessions.filter(s => s.session_type === type).length;
+                  const count = allSessions?.filter(s => s.session_type === type).length || 0;
                   const percentage = totalSessions > 0 ? Math.round((count / totalSessions) * 100) : 0;
                   const Icon = getSessionIcon(type);
                   
@@ -455,7 +439,7 @@ export function ProgressSection({ onBack }: ProgressSectionProps) {
               <p className="text-gray-600 text-sm">All your learning sessions</p>
             </div>
             <div className="p-6">
-              {allSessions.length > 0 ? (
+              {allSessions && allSessions.length > 0 ? (
                 <div className="space-y-4">
                   {allSessions.map((session, index) => {
                     const SessionIcon = getSessionIcon(session.session_type);
