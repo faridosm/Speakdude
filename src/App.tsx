@@ -117,11 +117,11 @@ function App() {
       {/* Hero Section with Grid Lines */}
       <Hero user={user} onNavigate={setCurrentPage} />
 
-      {/* Features Section - Added right after Hero */}
-      <Features />
-
-      {/* Luna Feature Section - NEW */}
+      {/* Luna Feature Section - Your Personal AI Language Tutor */}
       <LunaFeature onNavigate={setCurrentPage} />
+
+      {/* Features Section - Moved after Luna */}
+      <Features />
 
       {/* Problem Statement Section */}
       <ProblemStatement onNavigate={setCurrentPage} />
