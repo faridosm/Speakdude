@@ -4,7 +4,6 @@ import {
   Bot, 
   Gamepad2, 
   TrendingUp, 
-  Users, 
   User, 
   MessageCircle,
   Calendar,
@@ -53,7 +52,6 @@ function Dashboard({ onNavigate }: DashboardProps) {
     { name: 'Practice with Luna', icon: Bot },
     { name: 'Translation Game', icon: Gamepad2 },
     { name: 'Progress', icon: TrendingUp },
-    { name: 'Social Practice', icon: Users, comingSoon: true },
     { name: 'Profile', icon: User },
   ];
 
@@ -173,11 +171,6 @@ function Dashboard({ onNavigate }: DashboardProps) {
                 >
                   <item.icon className="w-5 h-5" />
                   <span className="font-medium">{item.name}</span>
-                  {item.comingSoon && (
-                    <span className="ml-auto text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full">
-                      Soon
-                    </span>
-                  )}
                 </button>
               ))}
               <button
@@ -217,11 +210,6 @@ function Dashboard({ onNavigate }: DashboardProps) {
               >
                 <item.icon className="w-5 h-5" />
                 <span className="font-medium">{item.name}</span>
-                {item.comingSoon && (
-                  <span className="ml-auto text-xs bg-gray-200 text-gray-600 px-2 py-1 rounded-full">
-                    Soon
-                  </span>
-                )}
               </button>
             ))}
           </nav>

@@ -129,7 +129,7 @@ function App() {
       {/* Problem-Solution Section */}
       <ProblemSolution onNavigate={setCurrentPage} />
 
-      {/* No Judgment. Just Progress - Updated Background */}
+      {/* Our Mission Section - Updated Content */}
       <section className="py-16" style={{
         background: 'linear-gradient(135deg, #f5f7a8 0%, #e8d5ff 50%, #d4a5ff 100%)'
       }}>
@@ -148,24 +148,30 @@ function App() {
         <div className="relative z-10 max-w-7xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-black text-gray-900 mb-6">
-              No Judgment. <span className="text-green-600">Just Progress.</span>
+              Our <span className="text-green-600">Mission</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We believe in a world where everyone deserves to learn without fear. SpeakFlow provides a completely private, encouraging environment — no teachers watching, no peers judging.
-            </p>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-xl text-gray-600 leading-relaxed mb-8">
+                Our mission is to provide a judgment-free environment where language learners can confidently practice speaking. A place where you're free to make as many mistakes as needed—without fear of being judged.
+              </p>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                We also aim to offer a personal AI-speaking tutor that helps you improve at your own pace, anytime, anywhere.
+              </p>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: X, title: "No cameras or peer review", color: "bg-red-100 text-red-600" },
-              { icon: Heart, title: "Practice on your own terms", color: "bg-pink-100 text-pink-600" },
-              { icon: Target, title: "Focused on building confidence", color: "bg-blue-100 text-blue-600" }
+              { icon: Shield, title: "Safe Learning Environment", description: "Practice without judgment or embarrassment", color: "bg-blue-100 text-blue-600" },
+              { icon: Bot, title: "Personal AI Tutor", description: "Available 24/7 to help you improve", color: "bg-green-100 text-green-600" },
+              { icon: Heart, title: "Learn at Your Pace", description: "No pressure, just progress", color: "bg-pink-100 text-pink-600" }
             ].map((item, index) => (
               <div key={index} className="text-center">
                 <div className={`w-16 h-16 ${item.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
                   <item.icon className="w-8 h-8" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900">{item.title}</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-gray-600">{item.description}</p>
               </div>
             ))}
           </div>
