@@ -31,7 +31,7 @@ export function LunaFeature({ onNavigate }: LunaFeatureProps) {
     },
     {
       icon: Globe,
-      title: "12+ Languages",
+      title: "30+ Languages",
       description: "Practice English, Spanish, French, Hindi, Japanese, and many more",
       iconBg: "bg-gradient-to-br from-green-500 to-green-600"
     },
@@ -190,7 +190,7 @@ export function LunaFeature({ onNavigate }: LunaFeatureProps) {
             <div className="text-gray-600 font-medium">Available Anytime</div>
           </div>
           <div className="space-y-2">
-            <div className="text-2xl font-bold text-gray-900">12+</div>
+            <div className="text-2xl font-bold text-gray-900">30+</div>
             <div className="text-gray-600 font-medium">Languages Supported</div>
           </div>
           <div className="space-y-2">
