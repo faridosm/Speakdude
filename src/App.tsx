@@ -43,6 +43,7 @@ import { Hero } from './components/home/Hero';
 import { Features } from './components/home/Features';
 import { ProblemStatement } from './components/home/ProblemStatement';
 import { ProblemSolution } from './components/home/ProblemSolution';
+import { LunaFeature } from './components/home/LunaFeature';
 import { SupportPage } from './components/SupportPage';
 
 function App() {
@@ -119,10 +120,13 @@ function App() {
       {/* Features Section - Added right after Hero */}
       <Features />
 
+      {/* Luna Feature Section - NEW */}
+      <LunaFeature onNavigate={setCurrentPage} />
+
       {/* Problem Statement Section */}
       <ProblemStatement onNavigate={setCurrentPage} />
 
-      {/* Problem-Solution Section - NEW */}
+      {/* Problem-Solution Section */}
       <ProblemSolution onNavigate={setCurrentPage} />
 
       {/* No Judgment. Just Progress - Updated Background */}
