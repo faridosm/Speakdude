@@ -39,6 +39,12 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
     return () => clearInterval(interval);
   }, [languages.length]);
 
+  const handleStartSpeaking = () => {
+    if (onNavigate) {
+      onNavigate('login');
+    }
+  };
+
   const painPoints = [
     {
       icon: Brain,
@@ -83,14 +89,9 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
       />
       
       <div className="relative z-10 max-w-6xl mx-auto px-6">
-        {/* Hero Section with Dynamic Language - Reduced sizes */}
+        {/* Hero Section with Dynamic Language - Removed "The Hidden Problem" button */}
         <div className="text-center mb-8">
           <div className="mb-6">
-            <div className="inline-flex items-center space-x-2 bg-white/60 backdrop-blur-sm rounded-full px-3 py-1.5 mb-4 border border-white/30">
-              <AlertTriangle className="w-4 h-4 text-orange-600" />
-              <span className="text-gray-800 font-semibold text-xs">The Hidden Problem</span>
-            </div>
-            
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-black text-gray-900 mb-4 leading-tight">
               You Learned{' '}
               <span 
@@ -167,10 +168,10 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
           </div>
         </div>
 
-        {/* Solution Teaser - Without The Solution Button */}
+        {/* Solution Teaser - With new "Start Speaking Today" button */}
         <div className="text-center">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/30 max-w-3xl mx-auto shadow-lg">
-            <div className="mb-4">
+            <div className="mb-6">
               <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-3">
                 Traditional Learning Teaches{' '}
                 <span className="text-orange-500">Knowledge</span>
@@ -185,7 +186,7 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
                 that turns thinking into natural speech.
               </p>
               
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/30">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/30 mb-6">
                 <p className="text-lg font-bold text-gray-900">
                   Your brain knows the language;
                   <br />
@@ -194,6 +195,14 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
                   </span>
                 </p>
               </div>
+
+              {/* New "Start Speaking Today" Button */}
+              <button 
+                onClick={handleStartSpeaking}
+                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-3 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              >
+                Start Speaking Today
+              </button>
             </div>
           </div>
         </div>
