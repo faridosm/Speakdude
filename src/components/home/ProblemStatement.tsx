@@ -40,12 +40,6 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
     return () => clearInterval(interval);
   }, [languages.length]);
 
-  const handleStartSpeaking = () => {
-    if (onNavigate) {
-      onNavigate('login');
-    }
-  };
-
   const painPoints = [
     {
       icon: Brain,
@@ -174,7 +168,7 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
           </div>
         </div>
 
-        {/* Solution Teaser - Reduced sizes and spacing */}
+        {/* Solution Teaser - Without Button */}
         <div className="text-center">
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-white/30 max-w-3xl mx-auto shadow-lg">
             <div className="mb-4">
@@ -197,7 +191,7 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
                 that turns thinking into natural speech.
               </p>
               
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-white/30">
                 <p className="text-lg font-bold text-gray-900">
                   Your brain knows the language;
                   <br />
@@ -207,19 +201,6 @@ export function ProblemStatement({ onNavigate }: ProblemStatementProps) {
                 </p>
               </div>
             </div>
-
-            {/* CTA Button - Reduced size */}
-            <button 
-              onClick={handleStartSpeaking}
-              className="group relative inline-flex items-center space-x-2 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white px-6 py-3 rounded-full text-sm font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
-            >
-              {/* Button background animation */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-              
-              <MessageSquare className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">Start Speaking Today</span>
-              <Target className="w-4 h-4 relative z-10 group-hover:rotate-90 transition-transform duration-300" />
-            </button>
           </div>
         </div>
       </div>
