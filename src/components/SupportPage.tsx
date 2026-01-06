@@ -12,7 +12,7 @@ import {
   Clock,
   Loader
 } from 'lucide-react';
-import { supabase } from '../lib/supabase';
+import { boltDb, CustomerSupportRequest } from '../lib/database';
 
 interface SupportPageProps {
   onNavigate?: (page: string) => void;
@@ -67,25 +67,13 @@ export function SupportPage({ onNavigate }: SupportPageProps) {
     }
 
     try {
-      // Create a new supabase client instance for anonymous access
-      // This ensures the request is made with the anon key
-      const { createClient } = await import('@supabase/supabase-js');
-      const anonClient = createClient(
-        import.meta.env.VITE_SUPABASE_URL,
-        import.meta.env.VITE_SUPABASE_ANON_KEY
-      );
-
-      // Insert support request into database using anonymous client
-      const { data, error: insertError } = await anonClient
-        .from('customer_support_requests')
-        .insert({
-          name: formData.name.trim(),
-          email: formData.email.trim(),
-          message: formData.message.trim(),
-          status: 'pending'
-        })
-        .select()
-        .single();
+      // Insert support request into Bolt database
+      const { data, error: insertError } = await boltDb.insert<CustomerSupportRequest>('customer_support_requests', {
+        name: formData.name.trim(),
+        email: formData.email.trim(),
+        message: formData.message.trim(),
+        status: 'pending'
+      });
 
       if (insertError) {
         throw insertError;

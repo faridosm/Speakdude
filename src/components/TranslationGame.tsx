@@ -133,28 +133,14 @@ export function TranslationGame({ onBack }: TranslationGameProps) {
   }, []);
 
   // API Functions
+  // Note: These would be replaced with actual Bolt API calls
   const callAPI = async (endpoint: string, data: any) => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`API Error (${response.status}): ${errorText}`);
-      }
-
-      const result = await response.json();
-      return result.data;
-    } catch (error) {
-      console.error(`❌ ${endpoint} API error:`, error);
-      throw error;
+    if (endpoint === 'translation-game' && data.action === 'generate_sentence') {
+      return await mockGenerateSentence(data.nativeLanguage, data.targetLanguage, data.difficulty);
+    } else if (endpoint === 'translation-game' && data.action === 'evaluate_translation') {
+      return await mockEvaluateTranslation(data.userTranslation, data.correctTranslation);
     }
+    throw new Error('API endpoint not implemented yet');
   };
 
   // Comprehensive cleanup function to prevent race conditions
@@ -327,7 +313,7 @@ export function TranslationGame({ onBack }: TranslationGameProps) {
         nativeLanguage: settings.nativeLanguage,
         targetLanguage: settings.targetLanguage,
         difficulty: settings.difficulty,
-        questionHistory: questionHistoryRef.current, // Pass history to avoid repetition
+        questionHistory: questionHistoryRef.current,
       });
 
       // Check if game is still active before proceeding
@@ -363,33 +349,8 @@ export function TranslationGame({ onBack }: TranslationGameProps) {
   };
 
   const playAudioIfAvailable = async (textToSpeak: string) => {
-    try {
-      const audioData = await callAPI('translation-game', {
-        action: 'text_to_speech',
-        textToSpeak: textToSpeak,
-        nativeLanguage: settings.nativeLanguage,
-      });
-
-      // Stop any existing audio to prevent overlap
-      if (currentAudioRef.current) {
-        currentAudioRef.current.pause();
-        currentAudioRef.current.src = '';
-      }
-
-      // Play new audio
-      const audio = new Audio(`data:${audioData.mimeType};base64,${audioData.audioBase64}`);
-      currentAudioRef.current = audio;
-      
-      try {
-        await audio.play();
-        console.log('✅ Audio playback started successfully');
-      } catch (error: any) {
-        console.warn('⚠️ Audio autoplay blocked:', error);
-      }
-    } catch (ttsError) {
-      console.warn('⚠️ Text-to-speech failed, continuing without audio:', ttsError);
-      // Game continues even if TTS fails - user can read the sentence
-    }
+    // Text-to-speech would be implemented with Bolt's audio services
+    console.log('🔊 Text-to-speech not yet implemented for Bolt database');
   };
 
   const startSpeakingPhase = () => {
@@ -533,18 +494,8 @@ export function TranslationGame({ onBack }: TranslationGameProps) {
     transitionToPhase('evaluating');
 
     try {
-      // Convert audio to base64
-      const arrayBuffer = await audioBlob.arrayBuffer();
-      const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-      // Transcribe with Whisper
-      const transcriptionData = await callAPI('whisper-transcribe', {
-        audioData: base64Audio,
-        language: settings.targetLanguage,
-        mimeType: audioBlob.type,
-      });
-
-      const transcription = transcriptionData.transcription;
+      // Mock transcription for now
+      const transcription = "Mock transcription - speech recognition not yet implemented";
       
       // Double-check question ID hasn't changed during API call
       if (recordingQuestionId !== currentQuestionIdRef.current || !gameActiveRef.current) {
@@ -667,296 +618,91 @@ export function TranslationGame({ onBack }: TranslationGameProps) {
     clearAllTimersAndTimeouts(); // Comprehensive cleanup
     setCorrectAnswersCount(0); // Reset correct answers counter
     
+// Mock API functions for Translation Game (to be implemented with Bolt's services)
     // Reset session tracking
-    setCurrentSessionId(null);
-    setSessionStartTime(null);
-    
-    setGameState({
-      phase: 'setup',
-      currentSentence: '',
-      correctTranslation: '',
-      userTranscription: '',
-      score: 0,
-      streak: 0,
-      questionNumber: 0,
-      timeRemaining: 0,
-      isCorrect: null,
-      feedback: '',
-    });
-  };
-
-  const getLanguageName = (code: string) => {
-    return LANGUAGE_OPTIONS.find(lang => lang.code === code)?.name || code;
-  };
-
-  const getLanguageFlag = (code: string) => {
-    return LANGUAGE_OPTIONS.find(lang => lang.code === code)?.flag || '🌐';
-  };
-
-  // Render Functions
-  if (gameState.phase === 'setup') {
-    return (
-      <div className="min-h-screen relative overflow-hidden" style={{
-        background: 'linear-gradient(135deg, #f5f7a8 0%, #e8d5ff 50%, #d4a5ff 100%)'
-      }}>
-        {/* Grid Pattern Background - Matching PracticeWithAI */}
-        <div 
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,0,0,0.25) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,0,0,0.25) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px'
-          }}
-        />
-
-        {/* Simple Back Arrow - Matching PracticeWithAI */}
-        <div className="relative z-10 max-w-5xl mx-auto p-4">
-          <div className="mb-6">
-              <button
+const mockGenerateSentence = async (nativeLanguage: string, targetLanguage: string, difficulty: string) => {
                 onClick={onBack}
-              className="w-10 h-10 rounded-full bg-white hover:bg-gray-50 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
-              >
-              <ArrowLeft className="w-5 h-5 text-gray-600 hover:text-gray-800" />
-              </button>
-        </div>
-
-          {/* Clean Content Area - No White Background */}
-          <div className="max-w-4xl mx-auto">
-            {/* Hero Section with Game Description */}
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                Rapid <span className="text-orange-500">Translation</span>
-              </h2>
-              <div className="max-w-2xl mx-auto mb-6">
-                <p className="text-lg text-gray-700 font-medium mb-3">
-                  <strong>How it works:</strong> AI speaks sentences in your native language, you translate them into your target language within the time limit!
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/30">
-                    <div className="text-blue-600 font-bold mb-1">🧠 Quick Thinking</div>
-                    <div className="text-gray-700">Build instant translation reflexes</div>
-                  </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/30">
-                    <div className="text-green-600 font-bold mb-1">🗣️ Speaking Practice</div>
-                    <div className="text-gray-700">Improve pronunciation & fluency</div>
-                  </div>
-                  <div className="bg-white/60 backdrop-blur-sm rounded-lg p-3 border border-white/30">
-                    <div className="text-purple-600 font-bold mb-1">⚡ Real-time AI</div>
-                    <div className="text-gray-700">Instant feedback & scoring</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Settings Grid Layout - Clean, No Background */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Language Settings */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                  <Globe className="w-5 h-5 mr-2 text-blue-500" />
-                  Languages
-                </h3>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Your Native Language
-                  </label>
-                  <select
-                    value={settings.nativeLanguage}
-                    onChange={(e) => setSettings(prev => ({ ...prev, nativeLanguage: e.target.value }))}
-                    className="w-full p-3 border-2 border-white/50 bg-white/80 backdrop-blur-sm rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all text-sm shadow-sm"
-                  >
-                    {LANGUAGE_OPTIONS.map(lang => (
-                      <option key={lang.code} value={lang.code}>
-                        {lang.flag} {lang.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Select Language you want to practice
-                  </label>
-                  <select
-                    value={settings.targetLanguage}
-                    onChange={(e) => setSettings(prev => ({ ...prev, targetLanguage: e.target.value }))}
-                    className="w-full p-3 border-2 border-white/50 bg-white/80 backdrop-blur-sm rounded-xl focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all text-sm shadow-sm"
-                  >
-                    {LANGUAGE_OPTIONS.map(lang => (
-                      <option key={lang.code} value={lang.code}>
-                        {lang.flag} {lang.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {/* Game Settings */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-bold text-gray-900 flex items-center">
-                  <Settings className="w-5 h-5 mr-2 text-green-500" />
-                  Game Settings
-                </h3>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Difficulty Level
-                  </label>
-                  <div className="grid grid-cols-3 gap-3">
-                    {(['beginner', 'intermediate', 'advanced'] as const).map(level => (
-                      <button
-                        key={level}
-                        onClick={() => setSettings(prev => ({ ...prev, difficulty: level }))}
-                        className={`p-3 rounded-xl border-2 transition-all capitalize font-semibold text-sm shadow-sm ${
-                          settings.difficulty === level
-                            ? 'border-purple-500 bg-purple-100/80 text-purple-700 backdrop-blur-sm'
-                            : 'border-white/50 bg-white/60 hover:bg-white/80 text-gray-700 backdrop-blur-sm'
-                        }`}
-                      >
-                        {level}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-gray-800 mb-3">
-                    Time per Question
-                  </label>
-                  <div className="grid grid-cols-4 gap-2">
-                    {[10, 20, 30, 40].map(time => (
-                      <button
-                        key={time}
-                        onClick={() => setSettings(prev => ({ ...prev, timeLimit: time }))}
-                        className={`p-3 rounded-xl border-2 transition-all font-semibold text-sm shadow-sm ${
-                          settings.timeLimit === time
-                            ? 'border-blue-500 bg-blue-100/80 text-blue-700 backdrop-blur-sm'
-                            : 'border-white/50 bg-white/60 hover:bg-white/80 text-gray-700 backdrop-blur-sm'
-                        }`}
-                      >
-                        {time}s
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-
-            {/* Start Game Button */}
-            <div className="mt-8 text-center">
-              <button
-                onClick={startGame}
-                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center space-x-3 mx-auto"
-              >
-                <Play className="w-6 h-6" />
-                <span>Start Game</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (gameState.phase === 'complete') {
-    return (
-      <div className="min-h-screen relative overflow-hidden flex items-center justify-center" style={{
-        background: 'linear-gradient(135deg, #f5f7a8 0%, #e8d5ff 50%, #d4a5ff 100%)'
-      }}>
-        {/* Grid Pattern Background - Matching PracticeWithAI */}
-        <div 
-          className="absolute inset-0 opacity-15"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(0,0,0,0.25) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,0,0,0.25) 1px, transparent 1px)
-            `,
-            backgroundSize: '60px 60px'
-          }}
-        />
-        
-        <div className="relative z-10 bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8 max-w-md w-full mx-4">
-          <div className="text-center">
-            <div className="w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Trophy className="w-10 h-10 text-white" />
-            </div>
-            
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Game Complete!</h2>
-            <p className="text-gray-600 mb-6">Great job on your translation skills!</p>
-            
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
-                <span className="font-semibold text-blue-700">Final Score</span>
-                <span className="text-2xl font-bold text-blue-600">{gameState.score}</span>
-              </div>
-              
-              <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
-                <span className="font-semibold text-green-700">Questions Answered</span>
-                <span className="text-xl font-bold text-green-600">{gameState.questionNumber}</span>
-              </div>
-              
-              <div className="flex items-center justify-between p-4 bg-purple-50 rounded-lg">
-                <span className="font-semibold text-purple-700">Correct Answers</span>
-                <span className="text-xl font-bold text-purple-600">{correctAnswersCount}</span>
-              </div>
-            </div>
-            
-            <div className="space-y-3">
-              <button
-                onClick={resetGame}
-                className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2"
-              >
-                <RotateCcw className="w-5 h-5" />
-                <span>Play Again</span>
-              </button>
-              
-              <button
-                onClick={onBack}
+  // Simulate API delay
                 className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold transition-all duration-300"
+  await new Promise(resolve => setTimeout(resolve, 1000));
               >
+  
                 Back to Dashboard
+  const mockSentences = {
               </button>
+    beginner: [
             </div>
+      { nativeSentence: "Hello, how are you?", targetTranslation: "Hola, ¿cómo estás?" },
           </div>
+      { nativeSentence: "I like coffee", targetTranslation: "Me gusta el café" },
         </div>
+      { nativeSentence: "What time is it?", targetTranslation: "¿Qué hora es?" }
       </div>
+    ],
     );
+    intermediate: [
   }
+      { nativeSentence: "I would like to book a hotel room", targetTranslation: "Me gustaría reservar una habitación de hotel" },
 
+      { nativeSentence: "Can you help me find the train station?", targetTranslation: "¿Puedes ayudarme a encontrar la estación de tren?" }
   // Game Playing Interface
+    ],
   return (
+    advanced: [
     <div className="min-h-screen relative overflow-hidden" style={{
+      { nativeSentence: "The economic situation has improved significantly", targetTranslation: "La situación económica ha mejorado significativamente" }
       background: 'linear-gradient(135deg, #f5f7a8 0%, #e8d5ff 50%, #d4a5ff 100%)'
+    ]
     }}>
+  };
       {/* Grid Pattern Background - Matching PracticeWithAI */}
+  
       <div 
+  const sentences = mockSentences[difficulty as keyof typeof mockSentences] || mockSentences.beginner;
         className="absolute inset-0 opacity-15"
+  const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
         style={{
+  
           backgroundImage: `
+  return {
             linear-gradient(rgba(0,0,0,0.25) 1px, transparent 1px),
+    nativeSentence: randomSentence.nativeSentence,
             linear-gradient(90deg, rgba(0,0,0,0.25) 1px, transparent 1px)
+    targetTranslation: randomSentence.targetTranslation,
           `,
+    difficulty
           backgroundSize: '60px 60px'
+  };
         }}
+};
       />
+
       
+const mockEvaluateTranslation = async (userTranslation: string, correctTranslation: string) => {
       {/* Game Content */}
+  // Simulate API delay
       <div className="relative z-10 max-w-4xl mx-auto p-4">
+  await new Promise(resolve => setTimeout(resolve, 800));
         <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
+  
           {/* Top Row with Back Button, Question Counter, Score and End Button */}
+  // Simple mock evaluation
           <div className="mb-4 flex items-center justify-between">
+  const similarity = userTranslation.toLowerCase().includes(correctTranslation.toLowerCase().split(' ')[0]);
             <div className="flex items-center space-x-4">
+  
               <button
+  return {
                 onClick={onBack}
+    isCorrect: similarity,
                 className="w-10 h-10 rounded-full bg-white hover:bg-gray-50 border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 flex items-center justify-center"
+    score: similarity ? 85 : 45,
               >
+    feedback: similarity ? "Great job! Very close to the correct translation." : "Good attempt! The correct answer is shown above."
                 <ArrowLeft className="w-5 h-5 text-gray-600 hover:text-gray-800" />
+  };
               </button>
+};
               <span className="text-sm font-semibold text-gray-600">
                 Question {gameState.questionNumber}
               </span>

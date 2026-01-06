@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase, Profile, UserProgress, LearningSession } from '../lib/supabase';
+import { boltDb, Profile, UserProgress, LearningSession } from '../lib/database';
 import { useAuth } from './useAuth';
 
 export function useUserData() {
@@ -34,65 +34,38 @@ export function useUserData() {
       setLoading(true);
 
       // Fetch profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+      const { data: profileData, error: profileError } = await boltDb.selectSingle<Profile>('profiles', { id: user.id });
 
       if (profileError) throw profileError;
       setProfile(profileData);
 
       // Fetch progress
-      const { data: progressData, error: progressError } = await supabase
-        .from('user_progress')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      const { data: progressData, error: progressError } = await boltDb.selectSingle<UserProgress>('user_progress', { user_id: user.id });
 
       if (progressError) throw progressError;
       setProgress(progressData);
 
       // Fetch recent sessions (last 5 for display)
-      const { data: sessionsData, error: sessionsError } = await supabase
-        .from('learning_sessions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('completed_at', { ascending: false })
-        .limit(5);
+      const { data: allSessionsData, error: sessionsError } = await boltDb.select<LearningSession>('learning_sessions', { user_id: user.id });
 
       if (sessionsError) throw sessionsError;
-      setRecentSessions(sessionsData || []);
+      
+      // Sort by completed_at descending and take last 5
+      const sortedSessions = (allSessionsData || []).sort((a, b) => 
+        new Date(b.completed_at).getTime() - new Date(a.completed_at).getTime()
+      );
+      setRecentSessions(sortedSessions.slice(0, 5));
 
       // Fetch ALL sessions for progress section
-      const { data: allSessionsData, error: allSessionsError } = await supabase
-        .from('learning_sessions')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('completed_at', { ascending: false });
-
-      if (allSessionsError) throw allSessionsError;
-      setAllSessions(allSessionsData || []);
+      setAllSessions(sortedSessions);
 
       // Fetch session counts for all sessions (for dashboard stats)
-      const { data: videoSessionsData, error: videoError } = await supabase
-        .from('learning_sessions')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('session_type', 'ai_conversation');
-
-      const { data: translationSessionsData, error: translationError } = await supabase
-        .from('learning_sessions')
-        .select('id')
-        .eq('user_id', user.id)
-        .eq('session_type', 'translation_game');
-
-      if (videoError) throw videoError;
-      if (translationError) throw translationError;
+      const videoSessions = sortedSessions.filter(s => s.session_type === 'ai_conversation');
+      const translationSessions = sortedSessions.filter(s => s.session_type === 'translation_game');
 
       setSessionCounts({
-        totalVideoSessions: videoSessionsData?.length || 0,
-        totalTranslationSessions: translationSessionsData?.length || 0
+        totalVideoSessions: videoSessions.length,
+        totalTranslationSessions: translationSessions.length
       });
 
     } catch (error) {
@@ -170,12 +143,7 @@ export function useUserData() {
     if (!user || !progress) return;
 
     try {
-      const { data, error } = await supabase
-        .from('user_progress')
-        .update(updates)
-        .eq('user_id', user.id)
-        .select()
-        .single();
+      const { data, error } = await boltDb.update<UserProgress>('user_progress', progress.id, updates);
 
       if (error) throw error;
       setProgress(data);
@@ -191,31 +159,12 @@ export function useUserData() {
 
     try {
       // Update profile in database
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          full_name: fullName,
-          email: email,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id)
-        .select()
-        .single();
+      const { data: profileData, error: profileError } = await boltDb.update<Profile>('profiles', user.id, {
+        full_name: fullName,
+        email: email,
+      });
 
       if (profileError) throw profileError;
-
-      // Update email in Supabase Auth if it's different from current
-      if (email !== user.email) {
-        const { error: authError } = await supabase.auth.updateUser({
-          email: email
-        });
-
-        if (authError) {
-          // If auth update fails, we should revert the profile update
-          console.error('Auth email update failed:', authError);
-          throw new Error('Failed to update email in authentication system. Please try again.');
-        }
-      }
 
       // Update local state
       setProfile(profileData);
@@ -232,14 +181,10 @@ export function useUserData() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
-        .from('learning_sessions')
-        .insert({
-          ...session,
-          user_id: user.id,
-        })
-        .select()
-        .single();
+      const { data, error } = await boltDb.insert<LearningSession>('learning_sessions', {
+        ...session,
+        user_id: user.id,
+      });
 
       if (error) throw error;
       
@@ -260,13 +205,7 @@ export function useUserData() {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
-        .from('learning_sessions')
-        .update(updates)
-        .eq('id', sessionId)
-        .eq('user_id', user.id)
-        .select()
-        .single();
+      const { data, error } = await boltDb.update<LearningSession>('learning_sessions', sessionId, updates);
 
       if (error) throw error;
       
