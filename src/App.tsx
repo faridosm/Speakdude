@@ -98,22 +98,6 @@ function App() {
 
   return (
     <div className="min-h-screen">
-      {/* Fixed Bolt.new Badge - Bottom Right - Increased Size */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <a 
-          href="https://bolt.new/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="block hover:scale-110 transition-transform duration-300"
-        >
-          <img 
-            src="/black_circle_360x360.png" 
-            alt="Built with Bolt.new" 
-            className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 drop-shadow-lg hover:drop-shadow-xl transition-all duration-300"
-          />
-        </a>
-      </div>
-
       {/* Hero Section with Grid Lines */}
       <Hero user={user} onNavigate={setCurrentPage} />
 
